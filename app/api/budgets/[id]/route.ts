@@ -69,7 +69,8 @@ export async function PATCH(
     return NextResponse.json(updated[0]);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errorMessages = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
+      const zodError = error as z.ZodError;
+      const errorMessages = zodError.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
       return NextResponse.json({ error: `Validation error: ${errorMessages}` }, { status: 400 });
     }
     console.error("Error updating budget:", error);
