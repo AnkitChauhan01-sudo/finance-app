@@ -56,7 +56,8 @@ export async function POST(request: Request) {
     return NextResponse.json(newBudget[0], { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      const errorMessages = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
+      return NextResponse.json({ error: `Validation error: ${errorMessages}` }, { status: 400 });
     }
     console.error("Error creating budget:", error);
     return NextResponse.json(
