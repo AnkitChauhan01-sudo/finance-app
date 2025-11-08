@@ -1,3 +1,7 @@
+# Finance App
+
+A Next.js finance tracking application with authentication, transactions, budgets, and charts.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
