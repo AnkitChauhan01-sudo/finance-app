@@ -217,9 +217,11 @@ export default function Charts() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={(props: any) => {
-                      const { name, percent } = props;
-                      return `${name} ${((percent as number) * 100).toFixed(0)}%`;
+                    label={(entry: any) => {
+                      if (!entry || !entry.name) return '';
+                      const total = expensePieData.reduce((sum, item) => sum + item.value, 0);
+                      const percent = total > 0 ? (entry.value / total) * 100 : 0;
+                      return `${entry.name} ${percent.toFixed(0)}%`;
                     }}
                     outerRadius={80}
                     fill="#8884d8"
@@ -252,9 +254,11 @@ export default function Charts() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={(props: any) => {
-                      const { name, percent } = props;
-                      return `${name} ${((percent as number) * 100).toFixed(0)}%`;
+                    label={(entry: any) => {
+                      if (!entry || !entry.name) return '';
+                      const total = incomePieData.reduce((sum, item) => sum + item.value, 0);
+                      const percent = total > 0 ? (entry.value / total) * 100 : 0;
+                      return `${entry.name} ${percent.toFixed(0)}%`;
                     }}
                     outerRadius={80}
                     fill="#8884d8"
