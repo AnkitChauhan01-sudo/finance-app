@@ -61,7 +61,11 @@ export async function POST(request: Request) {
     return NextResponse.json(newTransaction[0], { status: 201 });
   } catch (error) {
     if (error instanceof ZodError) {
-      const errorMessages = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
+      const zodError = error as ZodError;
+      const errorMessages = zodError.issues.map((issue) => {
+        const path = issue.path.length > 0 ? issue.path.join(".") : "root";
+        return `${path}: ${issue.message}`;
+      }).join(", ");
       return NextResponse.json({ error: `Validation error: ${errorMessages}` }, { status: 400 });
     }
     console.error("Error creating transaction:", error);
