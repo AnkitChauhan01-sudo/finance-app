@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { budgets } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 const budgetSchema = z.object({
   category: z.string().min(1),
@@ -55,9 +55,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json(newBudget[0], { status: 201 });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const zodError = error as z.ZodError;
-      const errorMessages = zodError.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
+    if (error instanceof ZodError) {
+      const errorMessages = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
       return NextResponse.json({ error: `Validation error: ${errorMessages}` }, { status: 400 });
     }
     console.error("Error creating budget:", error);
